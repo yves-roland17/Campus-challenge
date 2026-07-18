@@ -1,10 +1,11 @@
 "use server"
-
+import { auth } from "@/auth"
+import { Role } from "@prisma/client" 
 import { revalidatePath } from "next/cache"
 import {prisma} from '@/lib/prisma'
 import { eventSchema,participationSchema,loginSchema,registerSchema } from "@/lib/validation"
 import { redirect } from "next/navigation";
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
  interface Props {
   params: Promise<{ id:string }>;
 }
@@ -18,7 +19,7 @@ export async function creeEvent(prevState: any,data: FormData) {
     date: new Date(data.get("date") as string),
     image: ''
   };
-
+    const session = await auth();
     const comp = eventSchema.safeParse(rec);
     if (!comp.success) {
       return { error: comp.error.flatten().fieldErrors };
@@ -27,7 +28,7 @@ export async function creeEvent(prevState: any,data: FormData) {
   await prisma.event.create({
     data: {
       ...comp.data,
-      userId: 1,
+      userId: Number(session?.user.id),
     },
   });
 
@@ -77,7 +78,7 @@ export async function creeParticipation(prevState: any,data:FormData){
     }
 
     const eventId= data.get("eventId")  as string;
-    const userId=1
+    const userId= await auth()
     const comp= participationSchema.safeParse(rec);
     if(!comp.success){
         return{error:comp.error.flatten().fieldErrors};
@@ -86,7 +87,7 @@ export async function creeParticipation(prevState: any,data:FormData){
         data:{
              ...comp.data,
                 eventId:Number(eventId),
-                userId:userId
+                userId:Number(userId?.user.id)
         }
     })
 
@@ -138,10 +139,13 @@ const hash = await bcrypt.hash(data.get("password") as string, 10);
     }
     await prisma.user.create({
         data:{
-            ...comp.data
+              name: comp.data.name,
+              email: comp.data.email,
+              password: comp.data.password, 
+            role: Role.USER
         }
     })
-    redirect("/")
+    redirect("/auth/login")
     return {success:true,
     }
 }

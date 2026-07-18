@@ -1,10 +1,10 @@
-import Navbar from "@/components/header";
+
 import Footer from "@/components/footer";
 
 export default function ProfilePage() {
   return (
     <>
-      <Navbar />
+
 
       <main className="min-h-screen bg-slate-100 py-10">
         <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">

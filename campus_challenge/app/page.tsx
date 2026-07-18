@@ -1,4 +1,4 @@
-import Navbar from "@/components/header";
+
 import Footer from "@/components/footer";
 import ChallengeCard from "@/components/defis";
 import {prisma} from '@/lib/prisma'
@@ -16,7 +16,7 @@ export default async function Home() {
   
   return (
     <>
-      <Navbar />
+     
 
       <main className="max-w-7xl mx-auto px-6 py-10 text-gray-800">
 

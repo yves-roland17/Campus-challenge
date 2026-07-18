@@ -1,12 +1,19 @@
+"use client"
+
 import Link from "next/link";
-import Navbar from "@/components/header";
+
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
+
+  const credentialsAction = (formData: FormData) => {
+    const recForm=Object.fromEntries(formData)
+    signIn("credentials",  { ...recForm , redirectTo: "/" });
+  }
   return (
     <>
-      <Navbar />
-
-      <main className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
+     
+      <main className="min-h-screen flex items-center justify-center bg-slate-100 px-4 text-gray-800">
 
         <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
 
@@ -18,7 +25,7 @@ export default function LoginPage() {
             Connectez-vous à votre compte.
           </p>
 
-          <form action={} className="space-y-5">
+          <form action={credentialsAction} className="space-y-5">
 
             <div>
               <label className="font-medium">Email</label>
@@ -26,6 +33,7 @@ export default function LoginPage() {
               <input
                 type="email"
                 placeholder="exemple@email.com"
+                name="email"
                 className="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
@@ -35,6 +43,7 @@ export default function LoginPage() {
 
               <input
                 type="password"
+                name="password"
                 placeholder="********"
                 className="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none"
               />
@@ -50,7 +59,7 @@ export default function LoginPage() {
             Pas encore de compte ?
 
             <Link
-              href="/register"
+              href="/auth/singup"
               className="text-blue-600 font-semibold ml-2"
             >
               S'inscrire

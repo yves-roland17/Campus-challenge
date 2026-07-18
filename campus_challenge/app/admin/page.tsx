@@ -1,12 +1,30 @@
-import Navbar from "@/components/header";
 import Footer from "@/components/footer";
-
-export default function Dashboard() {
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
+import supp  from "./buutonSupprimmer";
+export default async function Dashboard() {
+const  session = await auth()
+let rec=0
+const perso= await prisma.user.findUnique({
+  where:{id:Number(session?.user.id),},
+  include:{
+     events :{
+      select:{participation:true, title:true, id:true}
+     },
+     _count:{
+      select:{events:true, participation:true}
+     },
+     participation:true,
+  }
+})
+const par = perso?.events.map((par)=>{
+  rec+=par.participation.length
+  return rec
+}
+)
   return (
     <>
-      <Navbar />
-
-      <main className="min-h-screen bg-blue-200 py-10">
+      <main className="min-h-screen bg-blue-200 text-gray-800 py-10">
 
         <div className="max-w-7xl mx-auto">
 
@@ -14,7 +32,7 @@ export default function Dashboard() {
             Tableau de bord
           </h1>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 text-center gap-6">
 
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-gray-500">
@@ -22,106 +40,60 @@ export default function Dashboard() {
               </h2>
 
               <p className="text-5xl font-bold mt-4">
-                12
+                {perso?._count.events}
               </p>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6">
+              
               <h2 className="text-gray-500">
                 Participations
               </h2>
 
               <p className="text-5xl font-bold mt-4">
-                34
+                {rec}
               </p>
             </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-gray-500">
-                Défis terminés
-              </h2>
-
-              <p className="text-5xl font-bold mt-4">
-                8
-              </p>
-            </div>
-
           </div>
-
           <div className="bg-white rounded-xl shadow-lg mt-10 p-8">
-
-            <h2 className="text-2xl font-bold mb-6">
+            <h2 className="text-center text-2xl font-bold mb-6">
               Mes défis
             </h2>
-
             <table className="w-full">
 
               <thead>
+                <tr className="border-b ">
 
-                <tr className="border-b">
+                  <th className="text-center py-3">Titre</th>
 
-                  <th className="text-left py-3">Titre</th>
-
-                  <th className="text-left">Participants</th>
-
-                  <th className="text-left">Statut</th>
-
+                  <th className="text-center">Participants</th>
+                   <th className="text-center">actions</th>
                 </tr>
-
               </thead>
-
               <tbody>
+                 {perso?.events.map((defi)=>{
+                  return(
+                    <tr key={defi.id} className="border-b">
 
-                <tr className="border-b">
+                      <td  className="py-4 text-center">
+                        {defi.title}
+                      </td>
 
-                  <td className="py-4">
-                    Todo App
-                  </td>
-
-                  <td>
-                    25
-                  </td>
-
-                  <td>
-
-                    <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full">
-                      Actif
-                    </span>
-
-                  </td>
-
-                </tr>
-
-                <tr>
-
-                  <td className="py-4">
-                    API Laravel
-                  </td>
-
-                  <td>
-                    18
-                  </td>
-
-                  <td>
-
-                    <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full">
-                      Terminé
-                    </span>
-
-                  </td>
-
-                </tr>
-
+                      <td className="text-center">
+                        {defi.participation.length}
+                      </td>
+                      <td className="text-center mt-2 flex gap-4 justify-center">
+                        <button className="text-blue-500 border-b-2 hover:bg-blue-200 border-blue-500 w-20 h-10 bg-blue-100 rounded">Modifier</button>
+                        <supp eventId={defi.id} />
+                      </td>
+                    </tr>
+                  )
+                 })}  
               </tbody>
-
             </table>
-
           </div>
-
         </div>
-
       </main>
-
       <Footer />
     </>
   );

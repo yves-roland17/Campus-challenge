@@ -26,15 +26,16 @@ const [state, formulAction, pending] = useActionState(
 
           <h1 className="text-3xl font-bold text-center mb-2">
             Créer un compte
-            
-          </h1>
-
-          <p className="text-center text-gray-500 mb-8">
-            Rejoignez Student Challenges.
-            <p className="text-red-500 text-sm mt-1">
+             <p className="text-red-500 text-sm mt-1">
               {state.messaage}
               {state.messaageUser}
             </p>
+          </h1>
+
+
+          <p className="text-center text-gray-500 mb-8">
+            Rejoignez Student Challenges.
+           
           </p>
 
           <form action={formulAction} className="space-y-5">

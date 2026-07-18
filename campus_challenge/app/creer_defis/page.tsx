@@ -1,5 +1,5 @@
 "use client"
-import Navbar from "@/components/header";
+
 import Footer from "@/components/footer";
 import { creeEvent } from "../actions";
 import { startTransition, useActionState } from "react";
@@ -15,7 +15,6 @@ export default function CreerDefis() {
   
   return (
     <>
-      <Navbar />
 
       <main className="min-h-screen bg-slate-100 py-10 text-gray-800">
         <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">

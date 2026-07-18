@@ -23,6 +23,7 @@ export const registerSchema=z.object({
     name:z.string().min(1, "le nom est requis").max(100, "le nom ne doit pas dépasser 100 caractères"),
     email:z.string().email("l'email doit être valide"),
     password:z.string().min(6, "le mot de passe doit contenir au moins 6 caractères"),
+    role: z.string().optional()
 })
     export type eventInput=z.infer<typeof eventSchema>
     export type participationInput=z.infer<typeof participationSchema>

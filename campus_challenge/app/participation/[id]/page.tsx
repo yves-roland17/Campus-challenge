@@ -11,7 +11,6 @@ const { id } = await params
 
   return (
     <>
-      <Navbar />
 
     <FormParticipation eventId={Number(id)} />
 

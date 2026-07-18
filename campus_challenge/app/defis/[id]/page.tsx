@@ -1,6 +1,6 @@
 
 
-import Navbar from "@/components/header";
+
 import Footer from "@/components/footer";
 import Link from "next/link";
 
@@ -26,7 +26,7 @@ export default async function ChallengeDetails({ params }: Props) {
   
   return (
     <>
-      <Navbar />
+     
 
       <main className="min-h-screen bg-slate-100 py-10 text-gray-800">
         <div className="max-w-5xl mx-auto">
