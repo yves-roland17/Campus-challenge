@@ -19,7 +19,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return token
     },
-
     async  session({ session, token }) {
       if (session.user && token.role) {
         session.user.id = token.id as string
@@ -44,15 +43,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       where: { email }
     });
     if (!user) {
-      
       return null;
     }
      const isPasswordValide = await bcrypt.compare(password, user.password);
     if (!isPasswordValide){
        return null;
     }
-    
-   
     return {
       
           id: user.id.toString(), 
@@ -64,8 +60,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     
   } catch (error) {
     if (error instanceof Error) {
-      console.error("❌ Erreur lors de la connexion :", error.message);
-    } else {
+      error.message = "❌ Erreur lors de la connexion : " + error.message;
       console.error("❌ Erreur inconnue lors de la connexion :", error);
     }
     return null; 

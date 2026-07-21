@@ -24,8 +24,14 @@ export default function FormParticipation({eventId}:{eventId: number}) {
   
             <h1 className="text-3xl font-bold text-center mb-8">
               🚀 Participer au défi
+              
             </h1>
   
+                 <p className="text-red-500 text-sm">
+                      {state.message}
+                   </p>
+
+
             <form className="space-y-6" action={formAction}>
               <input type="hidden" name="eventId" value={eventId} />
               <div>

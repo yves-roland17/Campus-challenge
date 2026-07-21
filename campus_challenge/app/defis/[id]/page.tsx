@@ -23,6 +23,14 @@ export default async function ChallengeDetails({ params }: Props) {
       participation:true
     }
   })
+
+
+  const par = await prisma.participation.findMany({
+    where:{eventId: Number(id)},
+    include:{
+      user:true
+    }
+  })
   
   return (
     <>
@@ -72,8 +80,11 @@ export default async function ChallengeDetails({ params }: Props) {
             <h2 className="text-2xl font-bold mb-6">
               Participants ({detail?._count.participation})
             </h2>
-
-
+             {par.map(rec=>{
+              return(
+                <h3>{rec.user.name}</h3>
+              )
+             })}
           </div>
 
         </div>

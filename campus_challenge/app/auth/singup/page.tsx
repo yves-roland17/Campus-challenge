@@ -93,7 +93,7 @@ const [state, formulAction, pending] = useActionState(
             Vous avez déjà un compte ?
 
             <Link
-              href="/login"
+              href="/auth/login"
               className="text-blue-600 font-semibold ml-2"
             >
               Se connecter

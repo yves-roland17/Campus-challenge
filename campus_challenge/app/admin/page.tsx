@@ -1,7 +1,7 @@
 import Footer from "@/components/footer";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
-import supp  from "./buutonSupprimmer";
+import Supp  from "./buutonSupprimmer";
 export default async function Dashboard() {
 const  session = await auth()
 let rec=0
@@ -27,11 +27,12 @@ const par = perso?.events.map((par)=>{
       <main className="min-h-screen bg-blue-200 text-gray-800 py-10">
 
         <div className="max-w-7xl mx-auto">
-
-          <h1 className="text-4xl font-bold mb-8">
-            Tableau de bord
-          </h1>
-
+           <div className="flex justify-between items-center mb-10">
+                  <h1 className="text-4xl font-bold mb-8">
+                  Tableau de bord
+                    </h1>
+                    <h2 className="text-4xl font-bold mb-8">{perso?.name}</h2>
+          </div>
           <div className="grid md:grid-cols-2 text-center gap-6">
 
             <div className="bg-white rounded-xl shadow-lg p-6">
@@ -43,13 +44,11 @@ const par = perso?.events.map((par)=>{
                 {perso?._count.events}
               </p>
             </div>
-
             <div className="bg-white rounded-xl shadow-lg p-6">
               
               <h2 className="text-gray-500">
                 Participations
               </h2>
-
               <p className="text-5xl font-bold mt-4">
                 {rec}
               </p>
@@ -84,7 +83,7 @@ const par = perso?.events.map((par)=>{
                       </td>
                       <td className="text-center mt-2 flex gap-4 justify-center">
                         <button className="text-blue-500 border-b-2 hover:bg-blue-200 border-blue-500 w-20 h-10 bg-blue-100 rounded">Modifier</button>
-                        <supp eventId={defi.id} />
+                        <Supp eventId={defi.id} />
                       </td>
                     </tr>
                   )

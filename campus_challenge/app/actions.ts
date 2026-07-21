@@ -3,7 +3,7 @@ import { auth } from "@/auth"
 import { Role } from "@prisma/client" 
 import { revalidatePath } from "next/cache"
 import {prisma} from '@/lib/prisma'
-import { eventSchema,participationSchema,loginSchema,registerSchema } from "@/lib/validation"
+import { eventSchema,participationSchema,loginSchema,registerSchema ,UpdateProfile } from "@/lib/validation"
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs"
  interface Props {
@@ -61,9 +61,10 @@ export async function MiseAjourEvent(data:FormData,idEvent:number){
 
 
 export async function SupprimerEvent(idEvent:number){
-    await prisma.event.delete({
-        where:{id:idEvent}
-    })
+   await prisma.$transaction([
+        prisma.participation.deleteMany({ where: { eventId: idEvent } }),
+        prisma.event.delete({ where: { id: idEvent } }),
+    ])
     revalidatePath("/")
     revalidatePath("defis")
     return {success:true}
@@ -79,6 +80,18 @@ export async function creeParticipation(prevState: any,data:FormData){
 
     const eventId= data.get("eventId")  as string;
     const userId= await auth()
+    
+    const verification= await prisma.participation.findFirst({
+        where:{
+             userId: Number(userId?.user.id),
+             eventId: Number(eventId)
+        },
+    })
+
+    if(verification){
+        return{message:"vous avez déja participé à cet évènement"}
+    }
+
     const comp= participationSchema.safeParse(rec);
     if(!comp.success){
         return{error:comp.error.flatten().fieldErrors};
@@ -149,3 +162,31 @@ const hash = await bcrypt.hash(data.get("password") as string, 10);
     return {success:true,
     }
 }
+
+
+
+export async function mise_ajour_profils(prevState:any,data:FormData){
+    const session= await auth()
+    const userId= session?.user.id
+    const datas ={
+        name:data.get("name") as string,
+        email:data.get("email") as string
+    }
+    const comp= UpdateProfile.safeParse(datas);
+    if(!comp.success){
+        return{error:comp.error.flatten().fieldErrors};
+        }
+
+
+    await prisma.user.update({
+        where:{id:Number(userId)},
+        data:{
+            ...comp.data
+        }
+    })
+
+     revalidatePath("/admin")
+    
+    return {success:true}
+}
+

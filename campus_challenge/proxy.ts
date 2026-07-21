@@ -19,10 +19,12 @@ export const proxy = auth((req ) => {
       return NextResponse.redirect(new URL("/auth/login", req.url))
   }
 
+
+
   return NextResponse.next()
 })
  
 
 export const config = {
-  matcher: ["/admin/:path*", "/creer_defis/:path*", "/profile/:path*", "/participation/:path*"],
+  matcher: ["/admin/:path*", "/creer_defis/:path*", "/profile/:path*", "/participation/:path*", "/api/:path*"],
 }
