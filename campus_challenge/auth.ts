@@ -4,7 +4,17 @@ import {prisma} from "@/lib/prisma"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { loginSchema } from "./lib/validation"
 import bcrypt from "bcryptjs"
-import { Role } from "@prisma/client"
+import { Role } from "./app/generated/prisma"
+import GoogleProvider from "next-auth/providers/google"
+import GithubProvider from "next-auth/providers/github"
+
+const Github_id= process.env.GITHUB_ID
+const Github_secret=process.env.GITHUB_SECRET
+
+const Google_id= process.env.GOOGLE_ID
+const Google_secret=process.env.GOOGLE_SECRET
+
+
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma as any),
@@ -45,6 +55,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     if (!user) {
       return null;
     }
+    if(user.password===null){
+      return null
+    }
      const isPasswordValide = await bcrypt.compare(password, user.password);
     if (!isPasswordValide){
        return null;
@@ -68,5 +81,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 }
 
 }),
+
+
+GoogleProvider({
+clientId:Google_id,
+clientSecret:Google_secret
+}),
+GithubProvider({
+  clientId: Github_id,
+  clientSecret:Github_secret
+}),
+
+
   ],
 })

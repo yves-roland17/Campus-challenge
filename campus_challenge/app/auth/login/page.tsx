@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { signIn } from "next-auth/react";
 
+
 export default function LoginPage() {
 
   const credentialsAction = (formData: FormData) => {
@@ -53,7 +54,17 @@ export default function LoginPage() {
               Se connecter
             </button>
 
+            
+
           </form>
+
+           <button onClick={()=>{signIn("google",{redirectTo: "/"})}} className="w-full mt-5 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+              Se connecter avec Google
+            </button>
+
+             <button onClick={()=>{signIn("github",{ redirectTo: "/"})}} className="w-full mt-5 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+              Se connecter avec Github
+            </button>
 
           <p className="text-center mt-6 text-gray-600">
             Pas encore de compte ?

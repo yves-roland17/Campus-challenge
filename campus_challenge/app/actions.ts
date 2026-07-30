@@ -1,6 +1,6 @@
 "use server"
 import { auth } from "@/auth"
-import { Role } from "@prisma/client" 
+import { Role } from "../app/generated/prisma" 
 import { revalidatePath } from "next/cache"
 import {prisma} from '@/lib/prisma'
 import { eventSchema,participationSchema,loginSchema,registerSchema ,UpdateProfile } from "@/lib/validation"
@@ -103,7 +103,7 @@ export async function creeParticipation(prevState: any,data:FormData){
                 userId:Number(userId?.user.id)
         }
     })
-
+     redirect("/")
     return {success:true}
 }
 
