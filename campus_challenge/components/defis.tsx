@@ -5,7 +5,7 @@ type defi={
   title:string,
   description:string,
   date:Date,
-  image:string,
+  image:string | null,
   user:{
     name:string
   },
