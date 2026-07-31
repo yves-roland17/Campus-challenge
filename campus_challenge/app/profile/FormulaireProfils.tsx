@@ -5,8 +5,11 @@ import { mise_ajour_profils } from "@/app/actions";
 
 
 
-export function ProfileForm({ user }: { user: { name: string; email: string } }) {
+export function ProfileForm({ user }: { user: { name: string; email: string, image:string | null } }) {
 
+  if(user.image===null){
+   user.image='/image.png'
+  }
     
  const initialState: 
   | { error: { name?: string[]; email?: string[] }; success?: undefined }
@@ -28,8 +31,8 @@ const [state, formulAction, pending] = useActionState(mise_ajour_profils, initia
           </h1>
 
           <div className="flex justify-center mb-8">
-            <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-5xl">
-              👨‍🎓
+            <div className="w-32 h-32  rounded bg-gray-200 flex items-center justify-center text-5xl">
+              <img src={user.image} alt="" />
             </div>
           </div>
 

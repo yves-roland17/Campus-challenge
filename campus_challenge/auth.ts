@@ -25,6 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id?.toString()
         token.name = user.name
         token.email= user.email
+        token.picture=user.image
         token.role = (user as any).role 
       }
       return token
@@ -35,6 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.role = token.role as "ADMIN" | "USER"
         session.user.name = token.name as string
         session.user.email = token.email as string
+        session.user.image=token.picture as string
       }
       return session
     }

@@ -10,8 +10,9 @@ export default async function ProfilePage() {
 
   const user = await prisma.user.findUnique({
     where: { id: Number(session?.user.id) },
-    select: { name: true, email: true },
+    select: { name: true, email: true, image:true},
   });
+
 
   if (!user) return <p>Utilisateur introuvable</p>;
 
