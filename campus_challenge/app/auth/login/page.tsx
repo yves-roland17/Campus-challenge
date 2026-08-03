@@ -1,15 +1,30 @@
 "use client"
 
 import Link from "next/link";
-
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 
 export default function LoginPage() {
+  const [errors, setErrors] = useState<string | null>(null);
 
-  const credentialsAction = (formData: FormData) => {
-    const recForm=Object.fromEntries(formData)
-    signIn("credentials",  { ...recForm , redirectTo: "/" });
+
+  
+  const credentialsAction = async (formData: FormData) => {
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+  
+    const result= await signIn("credentials",  {
+        email,
+        password,
+        redirect: false, });
+
+    if (result?.error) {
+      setErrors("Email ou mot de passe incorrect");
+      return;
+    }
+
+    window.location.href = "/";
   }
   return (
     <>
@@ -25,6 +40,7 @@ export default function LoginPage() {
           <p className="text-center text-gray-500 mb-8">
             Connectez-vous à votre compte.
           </p>
+           <p className="text-red-600 text-sm text-center">{errors}</p>
 
           <form action={credentialsAction} className="space-y-5">
 
