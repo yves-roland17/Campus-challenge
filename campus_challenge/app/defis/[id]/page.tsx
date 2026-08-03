@@ -1,17 +1,24 @@
-
-
-
 import Footer from "@/components/footer";
 import Link from "next/link";
-
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma"
+
  interface Props {
   params: Promise<{ id:string }>;
 }
 
 export default async function ChallengeDetails({ params }: Props) {
 
+
   const { id } = await params ;
+  const userId = await auth()
+      const verification= await prisma.participation.findFirst({
+          where:{
+               userId: Number(userId?.user.id),
+               eventId: Number(id)
+          },
+      })
+
 
   const detail= await prisma.event.findUnique({
     where:{id:Number(id)},
@@ -65,13 +72,22 @@ export default async function ChallengeDetails({ params }: Props) {
             <p className="text-gray-700 leading-8">
               {detail?.description}
             </p>
-
+                      
+                {!verification ? (
             <Link
               href={`/participation/${detail?.id}`}
               className="inline-block mt-8 bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700"
             >
               Participer
             </Link>
+          ) : (
+            <button
+              disabled
+              className="inline-block mt-8 bg-gray-400 text-white px-8 py-3 rounded-lg cursor-not-allowed"
+            >
+              Participer
+            </button>
+          )}
               
           </div>
 

@@ -31,6 +31,7 @@ export async function creeEvent(prevState: any,data: FormData) {
       userId: Number(session?.user.id),
     },
   });
+   redirect("/")
 
  return { success: 'votre challenge a été créé',};
 }
