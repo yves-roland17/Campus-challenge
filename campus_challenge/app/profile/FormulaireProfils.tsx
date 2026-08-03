@@ -31,7 +31,7 @@ const [state, formulAction, pending] = useActionState(mise_ajour_profils, initia
           </h1>
 
           <div className="flex justify-center mb-8">
-            <div className="w-32 h-32  rounded bg-gray-200 flex items-center justify-center text-5xl">
+            <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-5xl">
               <img src={user.image} alt="" />
             </div>
           </div>
@@ -70,15 +70,10 @@ const [state, formulAction, pending] = useActionState(mise_ajour_profils, initia
             >
               Mettre à jour mon profil
             </button>
-
           </form>
-
         </div>
       </main>
-
       <Footer />
     </>
   );
-   
-
 }

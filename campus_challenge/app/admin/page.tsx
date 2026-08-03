@@ -2,6 +2,7 @@ import Footer from "@/components/footer";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import Supp  from "./buutonSupprimmer";
+import Link from "next/link";
 export default async function Dashboard() {
 const  session = await auth()
 let rec=0
@@ -75,7 +76,7 @@ const par = perso?.events.map((par)=>{
                     <tr key={defi.id} className="border-b">
 
                       <td  className="py-4 text-center">
-                        {defi.title}
+                         <Link href={`/defis/${defi.id}`}>{defi.title}</Link>
                       </td>
 
                       <td className="text-center">
